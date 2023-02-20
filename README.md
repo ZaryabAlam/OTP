@@ -1,8 +1,8 @@
-# demo1
+# One Time Password App
 
-A new Flutter project.
+OTP demostrator
 
-## Getting Started
+## Screenshots
 
 This project is a starting point for a Flutter application.
 
