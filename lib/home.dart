@@ -103,26 +103,48 @@ class _HomeState extends State<Home> {
                 child: SignInButtonBuilder(
                   icon: Icons.login_rounded,
                   text: "Sign Out",
-                  onPressed: () async {
-                    final User user = await _auth.currentUser;
-                    await FirebaseAuth.instance.signOut();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AuthExampleApp(),
-                      ),
-                    );
-                    final String uid = user.uid;
-                    Fluttertoast.showToast(
-                      msg: "Logged Out",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.green,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    );
+                  onPressed: () {
+                    final User user = _auth.currentUser;
+                    showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                              title: Text("Logout?"),
+                              content: Text("Are you sure to logout?"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () async {
+                                      _signout();
+                                    },
+                                    child: Text("Yes")),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("No"))
+                              ],
+                            ));
                   },
+
+                  // onPressed: () async {
+                  //   final User user = await _auth.currentUser;
+                  //   await FirebaseAuth.instance.signOut();
+                  //   Navigator.pushReplacement(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => AuthExampleApp(),
+                  //     ),
+                  //   );
+                  //   final String uid = user.uid;
+                  //   Fluttertoast.showToast(
+                  //     msg: "Logged Out",
+                  //     toastLength: Toast.LENGTH_SHORT,
+                  //     gravity: ToastGravity.BOTTOM,
+                  //     timeInSecForIosWeb: 1,
+                  //     backgroundColor: Colors.green,
+                  //     textColor: Colors.white,
+                  //     fontSize: 16.0,
+                  //   );
+                  // },
                   backgroundColor: null,
                 ),
               ),
@@ -130,6 +152,27 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+    );
+  }
+
+  void _signout() async {
+    final User user = _auth.currentUser;
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AuthExampleApp(),
+      ),
+    );
+    final String uid = user.uid;
+    Fluttertoast.showToast(
+      msg: "Logged Out",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
     );
   }
 }
